@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = {extras = ["all"], version = "*"}
+python-dotenv = "*"
+sqlalchemy = "*"
+pydantic = {extras = ["email"], version = "*"}
+python-jose = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
+uvicorn = {extras = ["standard"], version = "*"}
+mysql-connector-python = "*"
+mysqlclient = "*"
+
+[dev-packages]
+black = "*"
+
+[requires]
+python_version = "3.10"
