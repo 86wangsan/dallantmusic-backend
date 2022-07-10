@@ -16,7 +16,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         db_obj = User(
             email=obj_in.email,
             password=get_password_hash(obj_in.password),
-            is_superuser=obj_in.is_superuser
+            is_superuser=obj_in.is_superuser,
         )
         db.add(db_obj)
         db.commit()
@@ -26,7 +26,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
             email=obj_in.email,
-            password=get_password_hash(obj_in.password)
+            password=get_password_hash(obj_in.password),
+            user_type=obj_in.user_type,
         )
         db.add(db_obj)
         db.commit()
@@ -34,7 +35,13 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         del db_obj.password
         return db_obj
 
-    def update(self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
+    def update(
+        self,
+        db: Session,
+        *,
+        db_obj: User,
+        obj_in: Union[UserUpdate, Dict[str, Any]]
+    ) -> User:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -44,7 +51,9 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data["password"] = hashed_password
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
+    def authenticate(
+        self, db: Session, *, email: str, password: str
+    ) -> Optional[User]:
         user = self.get_by_email(db, email=email)
         if not user:
             return None
