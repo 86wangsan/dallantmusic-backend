@@ -12,7 +12,6 @@ python-jose = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
 uvicorn = {extras = ["standard"], version = "*"}
 mysql-connector-python = "*"
-mysqlclient = "*"
 
 [dev-packages]
 black = "*"
