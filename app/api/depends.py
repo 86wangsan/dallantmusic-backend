@@ -13,7 +13,9 @@ from app.models.user import User
 from app.crud.user import crud_user
 from app.schemas.token import TokenPayload
 
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login/access-token")
+reusable_oauth2 = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/login/access-token"
+)
 
 
 def get_db() -> Generator:
@@ -24,7 +26,9 @@ def get_db() -> Generator:
         db.close()
 
 
-def get_current_user(db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)) -> User:
+def get_current_user(
+    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
+) -> User:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
@@ -41,13 +45,21 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(reusabl
     return user
 
 
-def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
+# Todo: get_current_instructor
+# Todo: get_current_student
+
+
+def get_current_active_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
     if not crud_user.is_active(current_user):
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
-def get_current_active_superuser(current_user: User = Depends(get_current_user)) -> User:
+def get_current_active_superuser(
+    current_user: User = Depends(get_current_user),
+) -> User:
     if not crud_user.is_superuser(current_user):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"

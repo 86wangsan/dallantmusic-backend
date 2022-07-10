@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.crud.user import crud_user
+from app.models.user import UserType
 from app.schemas.user import UserCreate
 from app.core.config import settings
 
@@ -11,6 +12,7 @@ def init_db(db: Session) -> None:
         user_in = UserCreate(
             email=settings.FIRST_SUPERUSER_EMAIL,
             password=settings.FIRST_SUPERUSER_PASSWORD,
-            is_superuser=True
+            is_superuser=True,
+            user_type=UserType.administrator,
         )
         crud_user.create_superuser(db=db, obj_in=user_in)
