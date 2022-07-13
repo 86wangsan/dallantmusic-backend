@@ -42,7 +42,7 @@ const instructor_students_list = {
   data: {
     studentList: [
       {
-        studentId: 2,
+        userId: 2,
         name: "유승헌",
         creditList: [
           {
@@ -60,7 +60,7 @@ const instructor_students_list = {
         ],
       },
       {
-        studentId: 5,
+        userId: 5,
         name: "남궁승헌",
         creditList: [
           {
@@ -83,6 +83,7 @@ const instructor_students_list = {
 const instructor_student_info = {
   data: {
     studentInfo: {
+      userId: 2,
       name: "유승헌",
       phoneNumber: "010-4650-8532",
       level: "전공 중, 고, 재수생",
