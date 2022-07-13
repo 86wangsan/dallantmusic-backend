@@ -1,9 +1,10 @@
+import datetime
 import enum
 from typing import List, Optional
 from pydantic import BaseModel
 
 
-class CreditTypeEnum(enum.Enum):
+class LessonTypeEnum(enum.Enum):
     type50 = "type50"
     type75 = "type75"
     type100 = "type100"
@@ -12,14 +13,34 @@ class CreditTypeEnum(enum.Enum):
 
 class Credit(BaseModel):
     creditId: int
-    creditType: CreditTypeEnum
+    creditType: LessonTypeEnum
 
 
-class StudentSchema(BaseModel):
+class Student(BaseModel):
     userId: int
     name: str
+
+
+class Lesson(BaseModel):
+    lessonId: int
+    lessonType: LessonTypeEnum
+    date: datetime.date
+    isCharged: bool
+
+
+class StudentCreditList(Student):
     creditList: List[Credit]
 
 
+class StudentLessonHistory(Student):
+    lessonList: List[Lesson]
+
+
+class StudentInfo(Student):
+    phoneNumber: str
+    level: str
+    purpose: str
+
+
 class InstructorMainMenuData(BaseModel):
-    studentList: List[StudentSchema]
+    studentList: List[StudentCreditList]
