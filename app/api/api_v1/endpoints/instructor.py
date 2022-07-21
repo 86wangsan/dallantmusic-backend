@@ -77,7 +77,7 @@ def get_student_info(
     )
 
     if studentId == 5:
-        StudentInfo(
+        ret = StudentInfo(
             userId=5,
             name="남궁승헌",
             phoneNumber="010-4650-8532",
@@ -108,7 +108,7 @@ def get_student_creditlist(
         ],
     )
     if studentId == 5:
-        StudentCreditList(
+        ret = StudentCreditList(
             userId=5,
             name="남궁승헌",
             creditList=[
