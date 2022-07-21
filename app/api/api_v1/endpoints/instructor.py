@@ -75,6 +75,15 @@ def get_student_info(
         level="전공 중, 고, 재수생",
         purpose="해외 대학원 입학",
     )
+
+    if studentId == 5:
+        StudentInfo(
+            userId=5,
+            name="남궁승헌",
+            phoneNumber="010-4650-8532",
+            level="전공 중, 고, 재수생",
+            purpose="해외 대학원 입학",
+        )
     return ret
 
 
@@ -98,6 +107,15 @@ def get_student_creditlist(
             Credit(creditId=4, creditType=LessonTypeEnum.type75),
         ],
     )
+    if studentId == 5:
+        StudentCreditList(
+            userId=5,
+            name="남궁승헌",
+            creditList=[
+                Credit(creditId=6, creditType=LessonTypeEnum.typePostPay),
+                Credit(creditId=7, creditType=LessonTypeEnum.typePostPay),
+            ],
+        )
     return ret
 
 
@@ -135,6 +153,20 @@ def get_student_all_lesson_history(
             ),
         ],
     )
+
+    if studentId == 5:
+        ret = StudentLessonHistory(
+            userId=5,
+            name="남궁승헌",
+            lessonList=[
+                Lesson(
+                    lessonId=23,
+                    lessonType=LessonTypeEnum.type50,
+                    date=date(2022, 2, 8),
+                    isCharged=True,
+                )
+            ],
+        )
     return ret
 
 
@@ -174,4 +206,18 @@ def get_student_monthly_lesson_history(
             ),
         ],
     )
+
+    if studentId == 5:
+        ret = StudentLessonHistory(
+            userId=5,
+            name="남궁승헌",
+            lessonList=[
+                Lesson(
+                    lessonId=23,
+                    lessonType=LessonTypeEnum.type50,
+                    date=date(2022, 2, 8),
+                    isCharged=True,
+                )
+            ],
+        )
     return ret
