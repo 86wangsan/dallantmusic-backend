@@ -10,7 +10,7 @@ from app.core.config import settings
 
 
 def init_db(db: Session) -> None:
-    init_test_db()
+    init_test_db(db)
     # user = crud_user.get_by_email(db, email=settings.FIRST_SUPERUSER_EMAIL)
     # if not user:
     #     user_in = UserCreate(
