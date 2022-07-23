@@ -9,8 +9,6 @@ from app.db.session import Base, engine, get_db
 from app.schemas.user import UserCreate, UserSignin
 from app.crud.user import crud_user
 
-Base.metadata.create_all(bind=engine)
-
 router = APIRouter()
 
 

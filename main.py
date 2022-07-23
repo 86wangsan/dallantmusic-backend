@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.api import api_router
 from app.core.config import settings
-from app.db.session import SessionLocal
+from app.db.session import Base, SessionLocal, engine
 from app.db.init_db import init_db
 
 
@@ -13,6 +13,7 @@ def init() -> None:
     init_db(db)
 
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
