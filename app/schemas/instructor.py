@@ -2,45 +2,31 @@ import datetime
 import enum
 from typing import List, Optional
 from pydantic import BaseModel
-
-
-class LessonTypeEnum(enum.Enum):
-    type50 = "type50"
-    type75 = "type75"
-    type100 = "type100"
-    typePostPay = "typePostPay"
-
-
-class Credit(BaseModel):
-    creditId: int
-    creditType: LessonTypeEnum
+from app.core.enums import LessonTypeEnum
+from app.schemas.credit import CreditRead
 
 
 class Student(BaseModel):
-    userId: int
+    user_id: int
     name: str
 
 
 class Lesson(BaseModel):
-    lessonId: int
-    lessonType: LessonTypeEnum
+    lesson_id: int
+    lesson_type: LessonTypeEnum
     date: datetime.date
-    isCharged: bool
+    is_charged: bool
 
 
 class StudentCreditList(Student):
-    creditList: List[Credit]
+    credit_list: List[CreditRead]
 
 
 class StudentLessonHistory(Student):
-    lessonList: List[Lesson]
+    lesson_list: List[Lesson]
 
 
 class StudentInfo(Student):
-    phoneNumber: str
-    level: str
-    purpose: str
-
-
-class InstructorMainMenuData(BaseModel):
-    studentList: List[StudentCreditList]
+    phone_number: Optional[str]
+    level: Optional[str]
+    purpose: Optional[str]

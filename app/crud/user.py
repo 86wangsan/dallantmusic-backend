@@ -16,7 +16,9 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         db_obj = User(
             email=obj_in.email,
             password=get_password_hash(obj_in.password),
+            name=obj_in.name,
             is_superuser=obj_in.is_superuser,
+            user_type=obj_in.user_type,
         )
         db.add(db_obj)
         db.commit()
@@ -27,12 +29,13 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         db_obj = User(
             email=obj_in.email,
             password=get_password_hash(obj_in.password),
+            name=obj_in.name,
             user_type=obj_in.user_type,
         )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-        del db_obj.password
+
         return db_obj
 
     def update(

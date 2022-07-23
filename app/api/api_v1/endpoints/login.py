@@ -29,6 +29,7 @@ async def login_for_access_token(
     user = crud_user.authenticate(
         db=db, email=user.email, password=user.password
     )
+    print(f"{user.id}, {user.email} {user.name}")
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

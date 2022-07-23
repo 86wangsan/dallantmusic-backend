@@ -1,121 +1,98 @@
 from datetime import date
 import datetime
-from typing import Any
+from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Body, HTTPException, Path
-from fastapi.encoders import jsonable_encoder
-from pydantic.networks import EmailStr
+from fastapi import APIRouter, Depends, Path
 
 from app.api.depends import (
     get_current_active_user,
-    get_current_active_superuser,
 )
 from app.models.user import User
+from app.schemas.credit import CreditCreate
 from app.schemas.instructor import (
-    Credit,
     Lesson,
     LessonTypeEnum,
-    InstructorMainMenuData,
-    Student,
     StudentCreditList,
     StudentInfo,
     StudentLessonHistory,
 )
-from app.schemas.user import UserRead, UserUpdate
 from app.api.depends import get_db
 from sqlalchemy.orm import Session
-from app.crud.user import crud_user
+from app.crud.credit import crud_credit
+from app.crud.student import crud_student
 
 router = APIRouter()
 
 
-@router.get("/studentlist", response_model=InstructorMainMenuData)
+@router.get("/studentlist", response_model=List[StudentCreditList])
 def get_student_list(
+    db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
-) -> InstructorMainMenuData:
-    ret = InstructorMainMenuData(
-        studentList=[
-            StudentCreditList(
-                userId=2,
-                name="유승헌",
-                creditList=[
-                    Credit(creditId=1, creditType=LessonTypeEnum.type50),
-                    Credit(creditId=2, creditType=LessonTypeEnum.type50),
-                    Credit(creditId=3, creditType=LessonTypeEnum.type100),
-                    Credit(creditId=4, creditType=LessonTypeEnum.type75),
-                ],
-            ),
-            StudentCreditList(
-                userId=5,
-                name="남궁승헌",
-                creditList=[
-                    Credit(creditId=6, creditType=LessonTypeEnum.typePostPay),
-                    Credit(creditId=7, creditType=LessonTypeEnum.typePostPay),
-                ],
-            ),
-        ]
+) -> List[StudentCreditList]:
+    ret = crud_credit.get_all_students_unused_credits_to_instructor(
+        db, current_user.id
     )
+
     return ret
 
 
 @router.get(
-    "/student/info/{studentId}",
+    "/student/info/{student_id}",
     response_model=StudentInfo,
 )
 def get_student_info(
-    studentId: int = Path(
+    db: Session = Depends(get_db),
+    student_id: int = Path(
         default=1, title="the student's id to retrieve his/her info"
     ),
-    current_user: User = Depends(get_current_active_user),
-) -> InstructorMainMenuData:
-    ret = StudentInfo(
-        userId=2,
-        name="유승헌",
-        phoneNumber="010-4650-8532",
-        level="전공 중, 고, 재수생",
-        purpose="해외 대학원 입학",
-    )
-
-    if studentId == 5:
-        ret = StudentInfo(
-            userId=5,
-            name="남궁승헌",
-            phoneNumber="010-4650-8532",
-            level="전공 중, 고, 재수생",
-            purpose="해외 대학원 입학",
-        )
+) -> StudentInfo:
+    ret = crud_student.get_student_info(db, student_id)
     return ret
 
 
 @router.get(
-    "/student/credits/{studentId}",
+    "/student/credits/{student_id}",
     response_model=StudentCreditList,
 )
 def get_student_creditlist(
-    studentId: int = Path(
+    db: Session = Depends(get_db),
+    student_id: int = Path(
         default=1, title="the student's id to retrieve his/her info"
     ),
     current_user: User = Depends(get_current_active_user),
-) -> InstructorMainMenuData:
-    ret = StudentCreditList(
-        userId=2,
-        name="유승헌",
-        creditList=[
-            Credit(creditId=1, creditType=LessonTypeEnum.type50),
-            Credit(creditId=2, creditType=LessonTypeEnum.type50),
-            Credit(creditId=3, creditType=LessonTypeEnum.type100),
-            Credit(creditId=4, creditType=LessonTypeEnum.type75),
-        ],
+) -> Optional[StudentCreditList]:
+    ret = crud_credit.get_student_unused_credits_to_instructor(
+        db, current_user.id, student_id
     )
-    if studentId == 5:
-        ret = StudentCreditList(
-            userId=5,
-            name="남궁승헌",
-            creditList=[
-                Credit(creditId=6, creditType=LessonTypeEnum.typePostPay),
-                Credit(creditId=7, creditType=LessonTypeEnum.typePostPay),
-            ],
-        )
+    return ret
+
+
+@router.post(
+    "/student/credits/{student_id}/add/{credit_type}",
+    response_model=StudentCreditList,
+)
+def get_student_creditlist(
+    db: Session = Depends(get_db),
+    student_id: int = Path(
+        default=1, title="the student's id to retrieve his/her info"
+    ),
+    credit_type: LessonTypeEnum = Path(
+        default="typePostPay", title="추가하고자 하는 크레딧의 type"
+    ),
+    current_user: User = Depends(get_current_active_user),
+) -> Optional[StudentCreditList]:
+    type_dict = {
+        "type50": LessonTypeEnum.type50,
+        "type75": LessonTypeEnum.type75,
+        "type100": LessonTypeEnum.type100,
+        "typePostPay": LessonTypeEnum.typePostPay,
+    }
+    create_credit_obj = CreditCreate(
+        credit_type=type_dict.get(credit_type),
+        own_student_id=student_id,
+        target_instructor_id=current_user.id,
+    )
+    ret = crud_credit.create(db, obj_in=create_credit_obj)
     return ret
 
 
@@ -128,7 +105,7 @@ def get_student_all_lesson_history(
         default=1, title="the student's id to retrieve his/her info"
     ),
     current_user: User = Depends(get_current_active_user),
-) -> InstructorMainMenuData:
+) -> StudentLessonHistory:
     ret = StudentLessonHistory(
         userId=2,
         name="유승헌",
@@ -154,9 +131,9 @@ def get_student_all_lesson_history(
         ],
     )
 
-    if studentId == 5:
+    if studentId == 3:
         ret = StudentLessonHistory(
-            userId=5,
+            userId=3,
             name="남궁승헌",
             lessonList=[
                 Lesson(
@@ -181,7 +158,7 @@ def get_student_monthly_lesson_history(
     year: int = Path(default=datetime.datetime.today().year, title="year"),
     month: int = Path(default=datetime.datetime.today().month, title="month"),
     current_user: User = Depends(get_current_active_user),
-) -> InstructorMainMenuData:
+) -> StudentLessonHistory:
     ret = StudentLessonHistory(
         userId=2,
         name="유승헌",
@@ -207,9 +184,9 @@ def get_student_monthly_lesson_history(
         ],
     )
 
-    if studentId == 5:
+    if studentId == 3:
         ret = StudentLessonHistory(
-            userId=5,
+            userId=3,
             name="남궁승헌",
             lessonList=[
                 Lesson(

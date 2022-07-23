@@ -8,11 +8,15 @@ class UserBase(BaseModel):
     email: EmailStr
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
+    phone_number: Optional[str]
+    level: Optional[str]
+    purpose: Optional[str]
 
 
 class UserCreate(UserBase):
     password: str
     user_type: UserType
+    name: str
 
 
 class UserSignin(UserBase):
