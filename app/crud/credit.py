@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.crud.base import CRUDBase
 from app.models.credit import Credit
 from app.models.user import User
-from app.schemas.credit import CreditCreate, CreditUpdate
+from app.schemas.credit import CreditCreate, CreditRead, CreditUpdate
 from app.schemas.instructor import StudentCreditList
 
 

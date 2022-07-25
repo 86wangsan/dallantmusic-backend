@@ -1,9 +1,7 @@
-import datetime
-import enum
 from typing import List, Optional
 from pydantic import BaseModel
-from app.core.enums import LessonTypeEnum
 from app.schemas.credit import CreditRead
+from app.schemas.lesson import LessonRead
 
 
 class Student(BaseModel):
@@ -11,19 +9,12 @@ class Student(BaseModel):
     name: str
 
 
-class Lesson(BaseModel):
-    lesson_id: int
-    lesson_type: LessonTypeEnum
-    date: datetime.date
-    is_charged: bool
-
-
 class StudentCreditList(Student):
     credit_list: List[CreditRead]
 
 
 class StudentLessonHistory(Student):
-    lesson_list: List[Lesson]
+    lesson_list: List[LessonRead]
 
 
 class StudentInfo(Student):

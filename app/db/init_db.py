@@ -1,10 +1,14 @@
+from calendar import c
+import datetime
 from sqlalchemy.orm import Session
 from app.core.enums import LessonTypeEnum
+from app.crud.lesson import crud_lesson
 
 from app.crud.user import crud_user
 from app.crud.credit import crud_credit
 from app.models.user import UserType
 from app.schemas.credit import CreditCreate
+from app.schemas.lesson import LessonCreate
 from app.schemas.user import UserCreate
 from app.core.config import settings
 
@@ -97,3 +101,75 @@ def init_test_db(db: Session) -> None:
                     target_instructor_id=4,
                 ),
             )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 1, 8),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=2,
+                instructor_id=4,
+                review="1월8일 수업입니다. 최대 5000바이트",
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 1, 10),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=2,
+                instructor_id=4,
+                review="1월10일 수업입니다. 최대 5000바이트",
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 1, 31),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=2,
+                instructor_id=4,
+                review="1월31일 수업입니다. 최대 5000바이트",
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 2, 8),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=2,
+                instructor_id=4,
+                review="2월8일 수업입니다. 최대 5000바이트",
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 2, 10),
+                is_charged=False,
+                time=datetime.time(11, 0),
+                student_id=2,
+                instructor_id=4,
+                review="2월 10일 수업입니다. 최대 5000바이트",
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 2, 14),
+                is_charged=False,
+                time=datetime.time(11, 0),
+                student_id=2,
+                instructor_id=4,
+                review="2월 14일 수업입니다. 최대 5000바이트",
+            ),
+        )
