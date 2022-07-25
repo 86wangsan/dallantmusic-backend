@@ -97,50 +97,50 @@ def get_student_creditlist(
 
 
 @router.get(
-    "/student/history/{studentId}",
+    "/student/history/{student_id}",
     response_model=StudentLessonHistory,
 )
 def get_student_all_lesson_history(
-    studentId: int = Path(
+    student_id: int = Path(
         default=1, title="the student's id to retrieve his/her info"
     ),
     current_user: User = Depends(get_current_active_user),
 ) -> StudentLessonHistory:
     ret = StudentLessonHistory(
-        userId=2,
+        user_id=2,
         name="유승헌",
-        lessonList=[
+        lesson_list=[
             Lesson(
-                lessonId=23,
-                lessonType=LessonTypeEnum.type50,
+                lesson_id=23,
+                lesson_type=LessonTypeEnum.type50,
                 date=date(2022, 2, 8),
-                isCharged=True,
+                is_charged=True,
             ),
             Lesson(
-                lessonId=24,
-                lessonType=LessonTypeEnum.type50,
+                lesson_id=24,
+                lesson_type=LessonTypeEnum.type50,
                 date=date(2022, 2, 10),
-                isCharged=False,
+                is_charged=False,
             ),
             Lesson(
-                lessonId=26,
-                lessonType=LessonTypeEnum.type50,
+                lesson_id=26,
+                lesson_type=LessonTypeEnum.type50,
                 date=date(2022, 2, 14),
-                isCharged=False,
+                is_charged=False,
             ),
         ],
     )
 
-    if studentId == 3:
+    if student_id == 3:
         ret = StudentLessonHistory(
-            userId=3,
+            user_id=3,
             name="남궁승헌",
-            lessonList=[
+            lesson_list=[
                 Lesson(
-                    lessonId=23,
-                    lessonType=LessonTypeEnum.type50,
+                    lesson_id=23,
+                    lesson_type=LessonTypeEnum.type50,
                     date=date(2022, 2, 8),
-                    isCharged=True,
+                    is_charged=True,
                 )
             ],
         )
@@ -148,11 +148,11 @@ def get_student_all_lesson_history(
 
 
 @router.get(
-    "/student/history/{studentId}/{year}/{month}",
+    "/student/history/{student_id}/{year}/{month}",
     response_model=StudentLessonHistory,
 )
 def get_student_monthly_lesson_history(
-    studentId: int = Path(
+    student_id: int = Path(
         default=1, title="the student's id to retrieve his/her info"
     ),
     year: int = Path(default=datetime.datetime.today().year, title="year"),
@@ -160,40 +160,40 @@ def get_student_monthly_lesson_history(
     current_user: User = Depends(get_current_active_user),
 ) -> StudentLessonHistory:
     ret = StudentLessonHistory(
-        userId=2,
+        user_id=2,
         name="유승헌",
-        lessonList=[
+        lesson_list=[
             Lesson(
-                lessonId=23,
-                lessonType=LessonTypeEnum.type50,
+                lesson_id=23,
+                lesson_type=LessonTypeEnum.type50,
                 date=date(2022, 2, 8),
-                isCharged=True,
+                is_charged=True,
             ),
             Lesson(
-                lessonId=24,
-                lessonType=LessonTypeEnum.type50,
+                lesson_id=24,
+                lesson_type=LessonTypeEnum.type50,
                 date=date(2022, 2, 10),
-                isCharged=False,
+                is_charged=False,
             ),
             Lesson(
-                lessonId=26,
-                lessonType=LessonTypeEnum.type50,
+                lesson_id=26,
+                lesson_type=LessonTypeEnum.type50,
                 date=date(2022, 2, 14),
-                isCharged=False,
+                is_charged=False,
             ),
         ],
     )
 
-    if studentId == 3:
+    if student_id == 3:
         ret = StudentLessonHistory(
-            userId=3,
+            user_id=3,
             name="남궁승헌",
-            lessonList=[
+            lesson_list=[
                 Lesson(
-                    lessonId=23,
-                    lessonType=LessonTypeEnum.type50,
+                    lesson_id=23,
+                    lesson_type=LessonTypeEnum.type50,
                     date=date(2022, 2, 8),
-                    isCharged=True,
+                    is_charged=True,
                 )
             ],
         )
