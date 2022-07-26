@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 from pydantic import BaseModel
 from app.core.enums import LessonTypeEnum
 
@@ -6,7 +7,7 @@ from app.core.enums import LessonTypeEnum
 class LessonBase(BaseModel):
     lesson_type: LessonTypeEnum
     date: datetime.date
-    is_charged: bool
+    is_charged: Optional[bool] = False
 
 
 class LessonRead(LessonBase):
@@ -18,6 +19,7 @@ class LessonCreate(LessonBase):
     student_id: int
     instructor_id: int
     review: str
+    credit_id: int
 
 
 class LessonUpdate(LessonBase):

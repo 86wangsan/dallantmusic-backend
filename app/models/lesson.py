@@ -26,3 +26,8 @@ class Lesson(Base):
     date = Column(Date(), index=True)
     time = Column(Time())
     review = Column(String(5000))
+    credit_id = Column(
+        INTEGER(display_width=11, unsigned=True),
+        ForeignKey("credit.id"),
+        index=True,
+    )

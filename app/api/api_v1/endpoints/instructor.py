@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session
 from app.crud.credit import crud_credit
 from app.crud.student import crud_student
 from app.crud.lesson import crud_lesson
-from app.schemas.lesson import LessonRead
+from app.schemas.lesson import LessonCreate, LessonRead
 
 router = APIRouter()
 
@@ -135,4 +135,17 @@ def get_student_monthly_lesson_history(
         year=year,
         month=month,
     )
+    return ret
+
+
+@router.post(
+    "/student/lesson/review",
+    response_model=LessonRead,
+)
+def post_create_lesson_review(
+    lesson: LessonCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+) -> LessonRead:
+    ret = crud_lesson.create_lesson_and_disable_credit(db, obj_in=lesson)
     return ret

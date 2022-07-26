@@ -4,6 +4,8 @@ from sqlalchemy import between
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
+from app.crud.credit import crud_credit
+from app.models.credit import Credit
 from app.models.lesson import Lesson
 from app.models.user import User
 from app.schemas.instructor import StudentLessonHistory
@@ -81,32 +83,32 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
 
         return StudentLessonHistory(**ret_data)
 
-    # def get_all_students_unused_credits_to_instructor(
-    #     self,
-    #     db: Session,
-    #     instructor_id: int,
-    # ) -> List[StudentCreditList]:
-    #     student_id_list = [
-    #         k
-    #         for (k,) in db.query(User.id)
-    #         .filter(User.id == Credit.own_student_id)
-    #         .filter(Credit.target_instructor_id == 4)
-    #         .distinct()
-    #         .all()
-    #     ]
-    #     ret_list = []
-    #     for student_id in student_id_list:
-    #         student_obj = crud_credit.get_student_unused_credits_to_instructor(
-    #             db, instructor_id, student_id
-    #         )
-    #         ret_list.append(student_obj)
+    def create_lesson_and_disable_credit(
+        self, db: Session, *, obj_in: LessonCreate
+    ) -> LessonRead:
+        db_obj = Lesson(
+            lesson_type=obj_in.lesson_type,
+            student_id=obj_in.student_id,
+            instructor_id=obj_in.instructor_id,
+            date=obj_in.date,
+            time=obj_in.time,
+            credit_id=obj_in.credit_id,
+            is_charged=False,
+        )
+        db.add(db_obj)
+        credit_obj = db.query(Credit).filter(Credit.id == obj_in.credit_id)
+        crud_credit.update(db, db_obj=credit_obj, obj_in={"is_used": True})
+        db.commit()
+        db.refresh(db_obj)
+        db.refresh(credit_obj)
+        ret = LessonRead(
+            lesson_type=db_obj.lesson_type,
+            date=db_obj.date,
+            is_charged=db_obj.is_charged,
+            lesson_id=db_obj.id,
+        )
 
-    #     return ret_list
-
-    # def update_is_used_to_true(self, db: Session, credit_id: int) -> Credit:
-    #     credit = db.query(Credit).get(credit_id)
-    #     self.update(db, db_obj=credit, obj_in={"is_used": False})
-    #     return credit
+        return ret
 
     def create(self, db: Session, *, obj_in: LessonCreate) -> LessonRead:
         db_obj = Lesson(
@@ -115,6 +117,7 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
             instructor_id=obj_in.instructor_id,
             date=obj_in.date,
             time=obj_in.time,
+            credit_id=obj_in.credit_id,
             is_charged=False,
         )
         db.add(db_obj)
