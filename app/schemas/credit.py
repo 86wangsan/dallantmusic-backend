@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 from app.core.enums import LessonTypeEnum
@@ -11,6 +12,7 @@ class CreditBase(BaseModel):
 class CreditCreate(CreditBase):
     own_student_id: int | User
     target_instructor_id: int | User
+    is_used: Optional[bool] = False
 
     class Config:
         arbitrary_types_allowed = True

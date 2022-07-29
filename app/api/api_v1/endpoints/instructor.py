@@ -46,6 +46,7 @@ def get_student_info(
     student_id: int = Path(
         default=1, title="the student's id to retrieve his/her info"
     ),
+    current_user: User = Depends(get_current_active_user),
 ) -> StudentInfo:
     ret = crud_student.get_student_info(db, student_id)
     return ret

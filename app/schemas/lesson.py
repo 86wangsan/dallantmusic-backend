@@ -18,7 +18,7 @@ class LessonCreate(LessonBase):
     time: datetime.time
     student_id: int
     instructor_id: int
-    review: str
+    review: Optional[str] = ""
     credit_id: int
 
 

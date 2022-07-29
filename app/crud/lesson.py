@@ -94,9 +94,12 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
             time=obj_in.time,
             credit_id=obj_in.credit_id,
             is_charged=False,
+            review=obj_in.review,
         )
         db.add(db_obj)
-        credit_obj = db.query(Credit).filter(Credit.id == obj_in.credit_id)
+        credit_obj = (
+            db.query(Credit).filter(Credit.id == obj_in.credit_id).first()
+        )
         crud_credit.update(db, db_obj=credit_obj, obj_in={"is_used": True})
         db.commit()
         db.refresh(db_obj)
@@ -118,6 +121,7 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
             date=obj_in.date,
             time=obj_in.time,
             credit_id=obj_in.credit_id,
+            review=obj_in.review,
             is_charged=False,
         )
         db.add(db_obj)

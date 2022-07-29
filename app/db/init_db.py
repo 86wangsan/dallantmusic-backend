@@ -74,6 +74,16 @@ def init_test_db(db: Session) -> None:
                 name="이혜정",
             ),
         )
+        for _ in range(6):
+            crud_credit.create(
+                db,
+                obj_in=CreditCreate(
+                    credit_type=LessonTypeEnum.type50,
+                    own_student_id=2,
+                    target_instructor_id=4,
+                    is_used=True,
+                ),
+            )
         for _ in range(4):
             crud_credit.create(
                 db,
@@ -111,6 +121,7 @@ def init_test_db(db: Session) -> None:
                 student_id=2,
                 instructor_id=4,
                 review="1월8일 수업입니다. 최대 5000바이트",
+                credit_id=1,
             ),
         )
         crud_lesson.create(
@@ -123,6 +134,7 @@ def init_test_db(db: Session) -> None:
                 student_id=2,
                 instructor_id=4,
                 review="1월10일 수업입니다. 최대 5000바이트",
+                credit_id=2,
             ),
         )
         crud_lesson.create(
@@ -135,6 +147,7 @@ def init_test_db(db: Session) -> None:
                 student_id=2,
                 instructor_id=4,
                 review="1월31일 수업입니다. 최대 5000바이트",
+                credit_id=3,
             ),
         )
         crud_lesson.create(
@@ -147,6 +160,7 @@ def init_test_db(db: Session) -> None:
                 student_id=2,
                 instructor_id=4,
                 review="2월8일 수업입니다. 최대 5000바이트",
+                credit_id=4,
             ),
         )
         crud_lesson.create(
@@ -159,6 +173,7 @@ def init_test_db(db: Session) -> None:
                 student_id=2,
                 instructor_id=4,
                 review="2월 10일 수업입니다. 최대 5000바이트",
+                credit_id=5,
             ),
         )
         crud_lesson.create(
@@ -171,5 +186,6 @@ def init_test_db(db: Session) -> None:
                 student_id=2,
                 instructor_id=4,
                 review="2월 14일 수업입니다. 최대 5000바이트",
+                credit_id=6,
             ),
         )
