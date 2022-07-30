@@ -10,7 +10,12 @@ from app.models.credit import Credit
 from app.models.lesson import Lesson
 from app.models.user import User
 from app.schemas.instructor import StudentLessonHistory
-from app.schemas.lesson import LessonRead, LessonCreate, LessonUpdate
+from app.schemas.lesson import (
+    LessonDetailRead,
+    LessonRead,
+    LessonCreate,
+    LessonUpdate,
+)
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -186,7 +191,20 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
 
         return ret
 
-    # def get_lesson_read(self, db: Session = )
+    def get_lesson_detail_read(
+        self, db: Session, *, lesson_id: int
+    ) -> LessonDetailRead:
+        lesson_obj: Lesson = (
+            db.query(Lesson).filter(Lesson.id == lesson_id).first()
+        )
+        return LessonDetailRead(
+            lesson_id=lesson_obj.id,
+            lesson_type=lesson_obj.lesson_type,
+            date=lesson_obj.date,
+            time=lesson_obj.time,
+            review=lesson_obj.review,
+            is_charged=lesson_obj.is_charged,
+        )
 
     def create(self, db: Session, *, obj_in: LessonCreate) -> LessonRead:
         db_obj = Lesson(

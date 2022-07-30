@@ -147,17 +147,3 @@ def get_student_monthly_lesson_history(
         month=month,
     )
     return ret
-
-
-@router.get(
-    "/lesson/detail/{lesson_id}",
-    response_model=LessonRead,
-)
-def post_create_lesson_review(
-    lesson: LessonCreate,
-    db: Session = Depends(get_db),
-    lesson_id: int = Path(default=1, title="lesson id"),
-    current_user: User = Depends(get_current_active_user),
-) -> LessonRead:
-    ret = crud_lesson.create_lesson_and_disable_credit(db, obj_in=lesson)
-    return ret

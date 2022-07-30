@@ -37,3 +37,4 @@ class UserInDBBase(UserBase):
 
 class UserRead(UserInDBBase):
     user_type: UserType
+    name: str

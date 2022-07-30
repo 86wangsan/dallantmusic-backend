@@ -14,6 +14,12 @@ class LessonRead(LessonBase):
     lesson_id: int
 
 
+class LessonDetailRead(LessonRead):
+    lesson_id: int
+    time: datetime.time
+    review: Optional[str]
+
+
 class LessonCreate(LessonBase):
     time: datetime.time
     student_id: int
