@@ -1,5 +1,5 @@
-from http.client import UnimplementedFileMode
 from typing import Any, Dict, List, Optional, Union
+from fastapi import HTTPException
 
 from sqlalchemy.orm import Session
 
@@ -23,8 +23,7 @@ class CRUDCredit(CRUDBase[Credit, CreditCreate, CreditUpdate]):
         )
 
         if user_info is None:
-            # Todo: fastapi HTTP error
-            raise Exception("HTTP 404 Error")
+            raise HTTPException(status_code=404, detail="User not found")
 
         credits_result = (
             db.query(
