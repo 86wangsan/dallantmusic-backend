@@ -36,4 +36,4 @@ class UserInDBBase(UserBase):
 
 
 class UserRead(UserInDBBase):
-    pass
+    user_type: UserType
