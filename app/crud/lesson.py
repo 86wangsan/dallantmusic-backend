@@ -14,13 +14,18 @@ from app.schemas.lesson import (
     LessonDetailRead,
     LessonRead,
     LessonCreate,
-    LessonUpdate,
+    LessonChargeUpdate,
+    LessonReviewUpdate,
 )
 import datetime
 from dateutil.relativedelta import relativedelta
 
 
-class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
+class CRUDLesson(
+    CRUDBase[
+        LessonRead, LessonCreate, Union[LessonChargeUpdate, LessonReviewUpdate]
+    ]
+):
     def get_lesson_history_of_student(
         self,
         db: Session,
@@ -204,6 +209,8 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
             time=lesson_obj.time,
             review=lesson_obj.review,
             is_charged=lesson_obj.is_charged,
+            instructor_id=lesson_obj.instructor_id,
+            student_id=lesson_obj.student_id,
         )
 
     def create(self, db: Session, *, obj_in: LessonCreate) -> LessonRead:
@@ -222,12 +229,31 @@ class CRUDLesson(CRUDBase[LessonRead, LessonCreate, LessonUpdate]):
         db.refresh(db_obj)
         return db_obj
 
+    def update_lesson_detail(
+        self, db: Session, *, lesson_id: int, update_data: LessonReviewUpdate
+    ) -> LessonDetailRead:
+        lesson_obj: Lesson = (
+            db.query(Lesson).filter(Lesson.id == lesson_id).first()
+        )
+        updated = self.update(db, db_obj=lesson_obj, obj_in=update_data)
+
+        return LessonDetailRead(
+            lesson_id=lesson_obj.id,
+            lesson_type=lesson_obj.lesson_type,
+            date=lesson_obj.date,
+            time=lesson_obj.time,
+            review=lesson_obj.review,
+            is_charged=lesson_obj.is_charged,
+            instructor_id=lesson_obj.instructor_id,
+            student_id=lesson_obj.student_id,
+        )
+
     def update(
         self,
         db: Session,
         *,
         db_obj: Lesson,
-        obj_in: Union[LessonUpdate, Dict[str, Any]]
+        obj_in: Union[LessonChargeUpdate, LessonReviewUpdate, Dict[str, Any]]
     ) -> LessonRead:
         if isinstance(obj_in, dict):
             update_data = obj_in

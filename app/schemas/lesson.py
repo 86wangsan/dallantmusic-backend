@@ -18,6 +18,8 @@ class LessonDetailRead(LessonRead):
     lesson_id: int
     time: datetime.time
     review: Optional[str]
+    instructor_id: int
+    student_id: int
 
 
 class LessonCreate(LessonBase):
@@ -28,5 +30,14 @@ class LessonCreate(LessonBase):
     credit_id: int
 
 
-class LessonUpdate(LessonBase):
+class LessonChargeUpdate(LessonBase):
     charged_date: datetime.date
+
+
+class LessonReviewUpdate(BaseModel):
+    lesson_type: Optional[LessonTypeEnum]
+    date: Optional[datetime.date]
+    time: Optional[datetime.time]
+    instructor_id: Optional[int]
+    student_id: Optional[int]
+    review: Optional[str]
