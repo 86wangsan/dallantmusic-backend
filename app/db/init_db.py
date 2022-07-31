@@ -189,3 +189,81 @@ def init_test_db(db: Session) -> None:
                 credit_id=6,
             ),
         )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 1, 8),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=3,
+                instructor_id=4,
+                review="1월8일 수업입니다. 최대 5000바이트",
+                credit_id=1,
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 1, 10),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=3,
+                instructor_id=4,
+                review="1월10일 수업입니다. 최대 5000바이트",
+                credit_id=2,
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 1, 31),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=3,
+                instructor_id=4,
+                review="1월31일 수업입니다. 최대 5000바이트",
+                credit_id=3,
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 2, 8),
+                is_charged=True,
+                time=datetime.time(11, 0),
+                student_id=3,
+                instructor_id=4,
+                review="2월8일 수업입니다. 최대 5000바이트",
+                credit_id=4,
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 2, 10),
+                is_charged=False,
+                time=datetime.time(11, 0),
+                student_id=3,
+                instructor_id=4,
+                review="2월 10일 수업입니다. 최대 5000바이트",
+                credit_id=5,
+            ),
+        )
+        crud_lesson.create(
+            db,
+            obj_in=LessonCreate(
+                lesson_type=LessonTypeEnum.type50,
+                date=datetime.date(2022, 2, 14),
+                is_charged=False,
+                time=datetime.time(11, 0),
+                student_id=3,
+                instructor_id=4,
+                review="2월 14일 수업입니다. 최대 5000바이트",
+                credit_id=6,
+            ),
+        )
