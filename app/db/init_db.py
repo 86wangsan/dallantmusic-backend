@@ -84,6 +84,16 @@ def init_test_db(db: Session) -> None:
                     is_used=True,
                 ),
             )
+        for _ in range(6):
+            crud_credit.create(
+                db,
+                obj_in=CreditCreate(
+                    credit_type=LessonTypeEnum.type50,
+                    own_student_id=3,
+                    target_instructor_id=4,
+                    is_used=True,
+                ),
+            )
         for _ in range(4):
             crud_credit.create(
                 db,
@@ -199,7 +209,7 @@ def init_test_db(db: Session) -> None:
                 student_id=3,
                 instructor_id=4,
                 review="1월8일 수업입니다. 최대 5000바이트",
-                credit_id=1,
+                credit_id=7,
             ),
         )
         crud_lesson.create(
@@ -212,7 +222,7 @@ def init_test_db(db: Session) -> None:
                 student_id=3,
                 instructor_id=4,
                 review="1월10일 수업입니다. 최대 5000바이트",
-                credit_id=2,
+                credit_id=8,
             ),
         )
         crud_lesson.create(
@@ -225,7 +235,7 @@ def init_test_db(db: Session) -> None:
                 student_id=3,
                 instructor_id=4,
                 review="1월31일 수업입니다. 최대 5000바이트",
-                credit_id=3,
+                credit_id=9,
             ),
         )
         crud_lesson.create(
@@ -238,7 +248,7 @@ def init_test_db(db: Session) -> None:
                 student_id=3,
                 instructor_id=4,
                 review="2월8일 수업입니다. 최대 5000바이트",
-                credit_id=4,
+                credit_id=10,
             ),
         )
         crud_lesson.create(
@@ -251,7 +261,7 @@ def init_test_db(db: Session) -> None:
                 student_id=3,
                 instructor_id=4,
                 review="2월 10일 수업입니다. 최대 5000바이트",
-                credit_id=5,
+                credit_id=11,
             ),
         )
         crud_lesson.create(
@@ -264,6 +274,6 @@ def init_test_db(db: Session) -> None:
                 student_id=3,
                 instructor_id=4,
                 review="2월 14일 수업입니다. 최대 5000바이트",
-                credit_id=6,
+                credit_id=12,
             ),
         )
